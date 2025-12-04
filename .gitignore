@@ -1,0 +1,17 @@
+# Node / npm (if you ever add a web front‑end)
+node_modules/
+dist/
+build/
+
+# macOS
+.DS_Store
+
+# IDE / editor
+.idea/
+.vscode/
+*.iml
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*

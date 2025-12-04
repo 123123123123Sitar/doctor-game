@@ -1,0 +1,140 @@
+.action-panel {
+    padding: var(--spacing-lg);
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-lg);
+    height: 100%;
+    overflow-y: auto;
+}
+
+.action-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: var(--spacing-md);
+    border-bottom: 1px solid var(--color-border);
+}
+
+.action-header h2 {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--color-text-primary);
+}
+
+.timer {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    font-size: 1.5rem;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+    animation: pulse-glow 2s ease-in-out infinite;
+}
+
+.timer-label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 1px;
+}
+
+.timer-value {
+    min-width: 80px;
+}
+
+.treatments-grid {
+    display: grid;
+    gap: var(--spacing-md);
+    grid-template-columns: 1fr;
+}
+
+.treatment-card {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
+    padding: var(--spacing-md);
+    background: var(--color-bg-tertiary);
+    border: 1px solid var(--color-border);
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all var(--transition-normal);
+    text-align: left;
+}
+
+.treatment-card:hover:not(:disabled) {
+    border-color: var(--color-accent-cyan);
+    background: rgba(6, 182, 212, 0.1);
+    transform: translateX(4px);
+    box-shadow: var(--shadow-glow-cyan);
+}
+
+.treatment-card.selected {
+    border-color: var(--color-accent-cyan);
+    background: rgba(6, 182, 212, 0.2);
+    animation: pulse-glow 0.5s ease-in-out;
+}
+
+.treatment-card:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.treatment-icon {
+    font-size: 0.875rem;
+    font-weight: 700;
+    flex-shrink: 0;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(6, 182, 212, 0.1);
+    border-radius: 8px;
+    color: var(--color-accent-cyan);
+    letter-spacing: 0.5px;
+}
+
+.treatment-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-xs);
+}
+
+.treatment-name {
+    font-weight: 600;
+    font-size: 0.875rem;
+    color: var(--color-text-primary);
+}
+
+.treatment-desc {
+    font-size: 0.75rem;
+    color: var(--color-text-muted);
+}
+
+.clues-section {
+    margin-top: auto;
+    padding-top: var(--spacing-lg);
+    border-top: 1px solid var(--color-border);
+}
+
+.clues-section h3 {
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: var(--spacing-md);
+    color: var(--color-accent-cyan);
+}
+
+.clues-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm);
+}
+
+.clue-item {
+    padding: var(--spacing-sm) var(--spacing-md);
+    background: rgba(6, 182, 212, 0.1);
+    border-left: 3px solid var(--color-accent-cyan);
+    border-radius: 4px;
+    font-size: 0.875rem;
+    color: var(--color-text-secondary);
+}

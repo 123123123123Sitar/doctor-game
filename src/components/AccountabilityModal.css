@@ -1,0 +1,130 @@
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(4px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    animation: fade-in var(--transition-normal);
+}
+
+.accountability-modal {
+    width: 90%;
+    max-width: 600px;
+    max-height: 80vh;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-lg);
+}
+
+.modal-header {
+    padding: var(--spacing-lg);
+    border-bottom: 1px solid var(--color-border);
+}
+
+.modal-header h2 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--color-accent-red);
+    text-align: center;
+}
+
+.modal-content {
+    padding: 0 var(--spacing-lg);
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-lg);
+}
+
+.incident-summary {
+    padding: var(--spacing-md);
+    background: rgba(239, 68, 68, 0.1);
+    border-left: 3px solid var(--color-accent-red);
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm);
+}
+
+.incident-summary p {
+    margin: 0;
+    font-size: 0.875rem;
+    color: var(--color-text-secondary);
+}
+
+.incident-summary strong {
+    color: var(--color-text-primary);
+}
+
+.reflection-section {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm);
+}
+
+.reflection-section label {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    font-size: 0.875rem;
+    color: var(--color-text-primary);
+}
+
+.label-hint {
+    font-size: 0.75rem;
+    color: var(--color-text-muted);
+    font-weight: 400;
+}
+
+.reflection-section textarea {
+    width: 100%;
+    padding: var(--spacing-md);
+    background: var(--color-bg-secondary);
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    color: var(--color-text-primary);
+    font-family: var(--font-sans);
+    font-size: 0.875rem;
+    resize: vertical;
+    transition: border-color var(--transition-fast);
+}
+
+.reflection-section textarea:focus {
+    outline: none;
+    border-color: var(--color-accent-cyan);
+    box-shadow: 0 0 0 3px rgba(6, 182, 212, 0.1);
+}
+
+.reflection-section textarea::placeholder {
+    color: var(--color-text-muted);
+}
+
+.accountability-prompt {
+    padding: var(--spacing-md);
+    background: rgba(6, 182, 212, 0.1);
+    border-left: 3px solid var(--color-accent-cyan);
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-xs);
+}
+
+.accountability-prompt p {
+    margin: 0;
+    font-size: 0.875rem;
+    color: var(--color-text-secondary);
+}
+
+.modal-footer {
+    padding: var(--spacing-lg);
+    border-top: 1px solid var(--color-border);
+    display: flex;
+    justify-content: center;
+}
+
+.modal-footer .btn {
+    min-width: 200px;
+}
