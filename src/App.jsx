@@ -5,6 +5,7 @@ import ActionPanel from './components/ActionPanel';
 import Database from './components/Database';
 import AccountabilityModal from './components/AccountabilityModal';
 import FloatingNotification from './components/FloatingNotification';
+import ProtocolTracker from './components/ProtocolTracker';
 import './App.css';
 
 const GameScreen = () => {
@@ -119,6 +120,7 @@ const GameScreen = () => {
                             <Database />
                         </div>
                         <div className="controls-grid-right">
+                            <ProtocolTracker />
                             <ActionPanel />
                         </div>
                     </div>

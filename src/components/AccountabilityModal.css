@@ -59,6 +59,28 @@
     color: var(--color-text-primary);
 }
 
+.failure-reason-box {
+    margin-top: var(--spacing-sm);
+    padding: var(--spacing-sm);
+    background: rgba(0, 0, 0, 0.2);
+    border: 1px dashed var(--color-accent-red);
+    border-radius: 4px;
+}
+
+.failure-reason-box strong {
+    display: block;
+    color: var(--color-accent-red);
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 4px;
+}
+
+.failure-reason-box p {
+    color: var(--color-text-primary);
+    font-style: italic;
+}
+
 .reflection-section {
     display: flex;
     flex-direction: column;

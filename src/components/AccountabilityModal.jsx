@@ -3,10 +3,10 @@ import { useState } from 'react';
 import './AccountabilityModal.css';
 
 const AccountabilityModal = () => {
-    const { discoveredClues, hasAcknowledgedFailure, acknowledgeFailure } = useGame();
+    const { discoveredClues, hasAcknowledgedFailure, acknowledgeFailure, failureReason } = useGame();
     const [reflection, setReflection] = useState('');
 
-    const showModal = discoveredClues.includes('allergic_reaction') && !hasAcknowledgedFailure;
+    const showModal = failureReason && !hasAcknowledgedFailure;
 
     if (!showModal) return null;
 
@@ -16,6 +16,7 @@ const AccountabilityModal = () => {
             return;
         }
         acknowledgeFailure(reflection);
+        setReflection(''); // Clear reflection for next time
     };
 
     return (
@@ -29,6 +30,12 @@ const AccountabilityModal = () => {
                     <div className="incident-summary">
                         <p><strong>Incident:</strong> Patient experienced adverse reaction to treatment.</p>
                         <p><strong>Status:</strong> Treatment unsuccessful. Patient condition worsened.</p>
+                        {failureReason && (
+                            <div className="failure-reason-box">
+                                <strong>Root Cause Analysis:</strong>
+                                <p>{failureReason}</p>
+                            </div>
+                        )}
                     </div>
 
                     <div className="reflection-section">

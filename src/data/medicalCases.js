@@ -5,7 +5,9 @@ export const MEDICAL_CASES = [
         name: 'Metallergy Syndrome',
         correctTreatment: 'oral',
         failingTreatments: ['injection'],
-        scanClue: 'Patient shows signs of severe metal sensitivity',
+        scanClue: 'Severe metal sensitivity. Protocol: Scan -> Oral -> Oral -> Injection A.',
+        requiredSequence: ['scan', 'oral', 'oral', 'injection_a'],
+        failureMessage: 'Protocol Violation: Desensitization incomplete. Two oral doses required before injection.',
         databases: [
             { disease: 'Kallmann Syndrome', symptoms: ['Fever', 'Fatigue', 'Neurological issues'], cure: 'Injection Therapy', probability: '35%', notes: 'Rare endocrine disorder' },
             { disease: 'Pompe Disease', symptoms: ['Muscle weakness', 'Respiratory issues', 'Fatigue'], cure: 'IV Enzyme Replacement', probability: '28%', notes: 'Genetic disorder affecting muscles' },
@@ -18,7 +20,9 @@ export const MEDICAL_CASES = [
         name: 'Hemophagocytic Lymphohistiocytosis',
         correctTreatment: 'oral',
         failingTreatments: ['injection'],
-        scanClue: 'Immune system attacking blood cells detected',
+        scanClue: 'Immune storm. Protocol: Scan -> Oral -> Oral -> IV.',
+        requiredSequence: ['scan', 'oral', 'oral', 'iv'],
+        failureMessage: 'Sequence Error: Double oral suppression required before IV stabilization.',
         databases: [
             { disease: 'Gaucher Disease', symptoms: ['Enlarged organs', 'Bone pain', 'Fatigue'], cure: 'IV Enzyme Therapy', probability: '30%', notes: 'Enzyme deficiency disorder' },
             { disease: 'Hemophagocytic Lymphohistiocytosis', symptoms: ['High fever', 'Enlarged spleen', 'Fatigue'], cure: 'Oral Immunosuppressants', probability: '70%', notes: 'Requires immediate immunosuppression - IV treatments may trigger cytokine storm', highlighted: true },
@@ -31,7 +35,9 @@ export const MEDICAL_CASES = [
         name: 'Acute Intermittent Porphyria',
         correctTreatment: 'iv',
         failingTreatments: ['oral'],
-        scanClue: 'Abnormal porphyrin levels in blood detected',
+        scanClue: 'Porphyria attack. Protocol: Scan -> IV -> IV -> IV.',
+        requiredSequence: ['scan', 'iv', 'iv', 'iv'],
+        failureMessage: 'Treatment Incomplete: Triple IV Hemin flush required to clear porphyrins.',
         databases: [
             { disease: 'Wilson Disease', symptoms: ['Liver problems', 'Tremors', 'Fatigue'], cure: 'Oral Chelation', probability: '28%', notes: 'Copper accumulation disorder' },
             { disease: 'Acute Intermittent Porphyria', symptoms: ['Severe abdominal pain', 'Dark urine', 'Weakness'], cure: 'IV Hemin Infusion', probability: '68%', notes: 'Critical: Oral medications contraindicated - may worsen attacks', highlighted: true },
@@ -44,7 +50,9 @@ export const MEDICAL_CASES = [
         name: 'Addisonian Crisis',
         correctTreatment: 'injection_a',
         failingTreatments: ['oral'],
-        scanClue: 'Critical cortisol deficiency - immediate action required',
+        scanClue: 'Cortisol crisis. Protocol: Scan -> Injection A -> Injection A -> IV.',
+        requiredSequence: ['scan', 'injection_a', 'injection_a', 'iv'],
+        failureMessage: 'Dosage Error: Two steroid injections followed by IV fluids required.',
         databases: [
             { disease: 'Hypothyroidism', symptoms: ['Fatigue', 'Weight gain', 'Cold sensitivity'], cure: 'Oral Levothyroxine', probability: '25%', notes: 'Thyroid hormone deficiency' },
             { disease: 'Addisonian Crisis', symptoms: ['Severe weakness', 'Low blood pressure', 'Confusion'], cure: 'Emergency Hydrocortisone Injection', probability: '72%', notes: 'URGENT: Oral route too slow - patient needs immediate IV/IM steroids', highlighted: true },
@@ -57,7 +65,9 @@ export const MEDICAL_CASES = [
         name: 'Myasthenia Gravis Crisis',
         correctTreatment: 'iv',
         failingTreatments: ['injection_a', 'injection_b'],
-        scanClue: 'Neuromuscular junction antibodies detected',
+        scanClue: 'NMJ failure. Protocol: Scan -> IV -> IV -> Oral.',
+        requiredSequence: ['scan', 'iv', 'iv', 'oral'],
+        failureMessage: 'Protocol Violation: Full plasma exchange (2x IV) required before oral maintenance.',
         databases: [
             { disease: 'ALS', symptoms: ['Muscle weakness', 'Difficulty speaking', 'Fatigue'], cure: 'Supportive Care', probability: '28%', notes: 'Progressive motor neuron disease' },
             { disease: 'Myasthenia Gravis Crisis', symptoms: ['Severe muscle weakness', 'Breathing difficulty', 'Drooping eyelids'], cure: 'IV Immunoglobulin Therapy', probability: '66%', notes: 'Critical: Standard injections ineffective - needs IVIG or plasmapheresis', highlighted: true },
@@ -70,7 +80,9 @@ export const MEDICAL_CASES = [
         name: 'Warfarin Toxicity',
         correctTreatment: 'injection_a',
         failingTreatments: ['oral', 'iv'],
-        scanClue: 'Dangerously elevated INR levels detected',
+        scanClue: 'High INR. Protocol: Scan -> Injection A -> Injection A -> Oral.',
+        requiredSequence: ['scan', 'injection_a', 'injection_a', 'oral'],
+        failureMessage: 'Sequence Error: Two Vitamin K injections required before oral stabilization.',
         databases: [
             { disease: 'Hemophilia', symptoms: ['Easy bruising', 'Prolonged bleeding', 'Joint pain'], cure: 'IV Clotting Factor', probability: '32%', notes: 'Genetic clotting disorder' },
             { disease: 'Warfarin Toxicity', symptoms: ['Bleeding', 'Bruising', 'Blood in urine'], cure: 'Vitamin K Injection', probability: '70%', notes: 'URGENT: Oral vitamin K too slow, IV route may cause anaphylaxis - IM injection required', highlighted: true },
@@ -83,7 +95,9 @@ export const MEDICAL_CASES = [
         name: 'Thyroid Storm',
         correctTreatment: 'oral',
         failingTreatments: ['injection_a'],
-        scanClue: 'Extreme thyroid hormone levels - metabolic crisis',
+        scanClue: 'Thyroid Storm. Protocol: Scan -> Oral -> Oral -> Oral.',
+        requiredSequence: ['scan', 'oral', 'oral', 'oral'],
+        failureMessage: 'Treatment Incomplete: Beta Blockers, PTU, and Steroids (3x Oral) required.',
         databases: [
             { disease: 'Graves Disease', symptoms: ['Weight loss', 'Rapid heartbeat', 'Anxiety'], cure: 'Oral Antithyroid', probability: '30%', notes: 'Autoimmune hyperthyroidism' },
             { disease: 'Thyroid Storm', symptoms: ['Very high fever', 'Confusion', 'Rapid heart rate'], cure: 'Oral PTU + Beta Blockers', probability: '68%', notes: 'Life-threatening: Injections may worsen cardiovascular instability', highlighted: true },
@@ -96,7 +110,9 @@ export const MEDICAL_CASES = [
         name: 'Anaphylaxis (IV Contrast Allergy)',
         correctTreatment: 'injection_b',
         failingTreatments: ['oral', 'iv'],
-        scanClue: 'Severe allergic reaction - airway compromising',
+        scanClue: 'Anaphylaxis. Protocol: Scan -> Injection B -> Injection B -> Oral.',
+        requiredSequence: ['scan', 'injection_b', 'injection_b', 'oral'],
+        failureMessage: 'Protocol Violation: Two Epinephrine doses required before Antihistamine.',
         databases: [
             { disease: 'Food Allergy', symptoms: ['Hives', 'Swelling', 'Nausea'], cure: 'Oral Antihistamine', probability: '25%', notes: 'IgE-mediated reaction' },
             { disease: 'Anaphylaxis', symptoms: ['Difficulty breathing', 'Swelling', 'Rapid pulse'], cure: 'Epinephrine Auto-Injector', probability: '75%', notes: 'CRITICAL: IV route delays treatment, oral ineffective - IM epinephrine only option', highlighted: true },
@@ -109,7 +125,9 @@ export const MEDICAL_CASES = [
         name: 'Severe Hypoglycemia',
         correctTreatment: 'injection_b',
         failingTreatments: ['oral'],
-        scanClue: 'Critical blood sugar drop - patient unconscious',
+        scanClue: 'Hypoglycemia. Protocol: Scan -> Injection B -> IV -> Oral.',
+        requiredSequence: ['scan', 'injection_b', 'iv', 'oral'],
+        failureMessage: 'Sequence Error: Glucagon -> IV Dextrose -> Oral snack required.',
         databases: [
             { disease: 'Type 1 Diabetes', symptoms: ['Thirst', 'Frequent urination', 'Fatigue'], cure: 'Insulin Injection', probability: '28%', notes: 'Autoimmune pancreatic failure' },
             { disease: 'Severe Hypoglycemia', symptoms: ['Unconsciousness', 'Seizures', 'Confusion'], cure: 'Glucagon Injection', probability: '72%', notes: 'URGENT: Patient unconscious - oral glucose impossible, needs IM glucagon', highlighted: true },
@@ -122,14 +140,16 @@ export const MEDICAL_CASES = [
         name: 'Malignant Hyperthermia',
         correctTreatment: 'iv',
         failingTreatments: ['injection_a', 'oral'],
-        scanClue: 'Life-threatening muscle rigidity and fever post-anesthesia',
+        scanClue: 'Malignant Hyperthermia. Protocol: Scan -> IV -> IV -> IV.',
+        requiredSequence: ['scan', 'iv', 'iv', 'iv'],
+        failureMessage: 'Dosage Error: Malignant Hyperthermia requires aggressive high-dose IV Dantrolene (3x).',
         databases: [
             { disease: 'Neuroleptic Malignant', symptoms: ['High fever', 'Muscle rigidity', 'Confusion'], cure: 'IV Dantrolene', probability: '32%', notes: 'Antipsychotic medication reaction' },
             { disease: 'Malignant Hyperthermia', symptoms: ['Extreme fever', 'Muscle rigidity', 'Rapid heart rate'], cure: 'IV Dantrolene Infusion', probability: '70%', notes: 'CRITICAL: Genetic reaction to anesthesia - ONLY IV dantrolene effective', highlighted: true },
             { disease: 'Serotonin Syndrome', symptoms: ['Agitation', 'Fever', 'Tremor'], cure: 'Oral Cyproheptadine', probability: '26%', notes: 'Medication interaction' },
             { disease: 'Heat Stroke', symptoms: ['Very high fever', 'Confusion', 'Seizures'], cure: 'Cooling + IV Fluids', probability: '22%', notes: 'Environmental hyperthermia' }
         ]
-    }
+    },
 ];
 
 export const getRandomCase = () => {
