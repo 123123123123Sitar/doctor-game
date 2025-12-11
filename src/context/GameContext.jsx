@@ -24,6 +24,7 @@ export const GameProvider = ({ children }) => {
     const [notifications, setNotifications] = useState([]);
     const [sequenceProgress, setSequenceProgress] = useState(0);
     const [failureReason, setFailureReason] = useState(null);
+    const [errorCount, setErrorCount] = useState(0);
 
     const showNotification = useCallback((message, healthChange, type) => {
         const id = Date.now() + Math.random();
@@ -81,6 +82,7 @@ export const GameProvider = ({ children }) => {
         setNotifications([]);
         setSequenceProgress(0);
         setFailureReason(null);
+        setErrorCount(0);
     }, []);
 
     const addAction = useCallback((action) => {
@@ -118,6 +120,7 @@ export const GameProvider = ({ children }) => {
             if (!hasAcknowledgedFailure) {
                 // First time failing this step
                 setPatientHealth(prev => Math.max(0, prev - 30));
+                setErrorCount(prev => prev + 1);
 
                 let reason = currentCase.failureMessage || "Incorrect procedure followed.";
                 if (sequenceProgress === 0 && treatment.type !== 'scan') {
@@ -218,7 +221,8 @@ export const GameProvider = ({ children }) => {
         discoverClue,
         applyTreatment,
         acknowledgeFailure,
-        failureReason
+        failureReason,
+        errorCount
     };
 
     return (

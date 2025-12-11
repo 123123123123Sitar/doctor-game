@@ -6,10 +6,11 @@ import Database from './components/Database';
 import AccountabilityModal from './components/AccountabilityModal';
 import FloatingNotification from './components/FloatingNotification';
 import ProtocolTracker from './components/ProtocolTracker';
+import Leaderboard from './components/Leaderboard';
 import './App.css';
 
 const GameScreen = () => {
-    const { gameState, startGame } = useGame();
+    const { gameState, startGame, timeLeft, errorCount, currentCase } = useGame();
     const [showScrollIndicator, setShowScrollIndicator] = useState(true);
 
     useEffect(() => {
@@ -54,16 +55,24 @@ const GameScreen = () => {
     }
 
     if (gameState === 'win') {
+        const score = {
+            time: 300 - timeLeft, // Calculate time elapsed (assuming 300s start)
+            errors: errorCount,
+            caseName: currentCase?.name
+        };
+
         return (
             <div className="end-screen win-screen">
                 <div className="end-content glass-panel animate-fade-in">
                     <div className="end-icon">SUCCESS</div>
                     <h1>Patient Saved!</h1>
                     <p>You successfully diagnosed and treated the rare condition.</p>
+
+                    <Leaderboard newScore={score} />
+
                     <div className="end-stats">
                         <p>Demonstrated critical thinking by analyzing symptoms</p>
                         <p>Took action when needed</p>
-                        <p>Acknowledged mistakes and learned from them</p>
                     </div>
                     <button className="btn btn-success btn-large" onClick={startGame}>
                         New Case
