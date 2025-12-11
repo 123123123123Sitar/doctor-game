@@ -102,145 +102,95 @@ export const GameProvider = ({ children }) => {
 
         setTreatmentAttempts(prev => prev + 1);
 
-        // Check sequence if defined
-        if (currentCase.requiredSequence) {
-            const expectedAction = currentCase.requiredSequence[sequenceProgress];
-            console.log('Debug Sequence:', {
-                treatmentType: treatment.type,
-                expectedAction,
-                sequenceProgress,
-                sequence: currentCase.requiredSequence
-            });
+        // STICT SEQUENCE LOGIC
+        // The game now relies entirely on the requiredSequence defined in the case.
+        const expectedAction = currentCase.requiredSequence[sequenceProgress];
 
-            if (treatment.type !== expectedAction) {
-                // Wrong step in sequence
-                if (!hasAcknowledgedFailure) {
-                    setPatientHealth(prev => Math.max(0, prev - 30));
+        console.log('Sequence Check:', {
+            treatmentType: treatment.type,
+            expectedAction,
+            sequenceProgress,
+            sequence: currentCase.requiredSequence
+        });
 
-                    let reason = currentCase.failureMessage || "Incorrect procedure followed.";
-                    if (sequenceProgress === 0 && treatment.type !== 'scan') {
-                        reason = "Protocol Violation: You must run a diagnostic scan before administering any treatment.";
-                    } else {
-                        // Add hint about what was expected
-                        const expected = currentCase.requiredSequence[sequenceProgress];
-                        const expectedName = expected === 'injection_a' ? 'Injection A' :
-                            expected === 'injection_b' ? 'Injection B' :
-                                expected === 'iv' ? 'IV Drip' :
-                                    expected === 'oral' ? 'Oral Meds' : expected;
-                        reason += ` (Expected step: ${expectedName})`;
-                    }
+        if (treatment.type !== expectedAction) {
+            // WRONG STEP
+            if (!hasAcknowledgedFailure) {
+                // First time failing this step
+                setPatientHealth(prev => Math.max(0, prev - 30));
 
-                    setFailureReason(reason);
-
-                    addAction({
-                        type: 'treatment_failed',
-                        name: treatment.name,
-                        result: `Protocol violation! ${reason}`,
-                        healthChange: -30
-                    });
-                    discoverClue('treatment_failed');
-                    showNotification('Protocol Violation!', -30, 'failure');
-                    return false;
+                let reason = currentCase.failureMessage || "Incorrect procedure followed.";
+                if (sequenceProgress === 0 && treatment.type !== 'scan') {
+                    reason = "Protocol Violation: You must run a diagnostic scan before administering any treatment.";
                 } else {
-                    // Already acknowledged but still wrong
-                    showNotification('Incorrect Action', -5, 'failure');
-                    setPatientHealth(prev => Math.max(0, prev - 5));
-                    return false;
+                    // Friendly hint about what was expected
+                    const expectedName = expectedAction === 'injection_a' ? 'Injection A' :
+                        expectedAction === 'injection_b' ? 'Injection B' :
+                            expectedAction === 'iv' ? 'IV Drip' :
+                                expectedAction === 'oral' ? 'Oral Meds' :
+                                    expectedAction === 'scan' ? 'Diagnostic Scan' : expectedAction;
+                    reason += ` (Expected step: ${expectedName})`;
                 }
+
+                setFailureReason(reason);
+
+                addAction({
+                    type: 'treatment_failed',
+                    name: treatment.name,
+                    result: `Protocol violation! ${reason}`,
+                    healthChange: -30
+                });
+                discoverClue('treatment_failed');
+                showNotification('Protocol Violation!', -30, 'failure');
+                return false;
             } else {
-                // Correct step
-                setSequenceProgress(prev => prev + 1);
-                setHasAcknowledgedFailure(false); // Reset acknowledgment for next steps
-                setFailureReason(null); // Clear failure reason so modal doesn't reappear
+                // Already acknowledged failure, just penalize
+                showNotification('Incorrect Action', -5, 'failure');
+                setPatientHealth(prev => Math.max(0, prev - 5));
+                return false;
+            }
+        } else {
+            // CORRECT STEP
+            setSequenceProgress(prev => prev + 1);
+            setHasAcknowledgedFailure(false);
+            setFailureReason(null);
 
-                // If this was the last step (cure), apply cure logic
-                if (sequenceProgress === currentCase.requiredSequence.length - 1) {
-                    // Proceed to success logic below
+            // Check if this was the FINAL step
+            if (sequenceProgress === currentCase.requiredSequence.length - 1) {
+                // VICTORY
+                setPatientHealth(100);
+                addAction({
+                    type: 'treatment_success',
+                    name: treatment.name,
+                    result: 'Protocol complete! Patient cured and stabilizing.',
+                    healthChange: 40
+                });
+                showNotification('Patient Cured!', 40, 'success');
+                setTimeout(() => setGameState('win'), 1500);
+                return true;
+            } else {
+                // INTERMEDIATE STEP SUCCESS
+                setPatientHealth(prev => Math.min(100, prev + 10)); // Reward helpful steps
+
+                let resultMsg = 'Protocol step verified.';
+                if (treatment.type === 'scan') {
+                    resultMsg = `Scan complete. ${currentCase.scanClue}`;
+                    discoverClue('scan_complete');
+                    showNotification('Scan Complete', null, 'neutral');
                 } else {
-                    // Intermediate step success
-                    setPatientHealth(prev => Math.min(90, prev + 10));
-                    addAction({
-                        type: 'step_complete',
-                        name: treatment.name,
-                        result: 'Protocol step verified. Patient stabilizing.',
-                        healthChange: 10
-                    });
-
-                    if (treatment.type === 'scan') {
-                        discoverClue('scan_complete');
-                        showNotification('Scan Complete', null, 'neutral');
-                    } else {
-                        showNotification('Step Verified', 10, 'success');
-                    }
-                    return true;
+                    showNotification('Step Verified', 10, 'success');
                 }
+
+                addAction({
+                    type: 'step_complete',
+                    name: treatment.name,
+                    result: resultMsg,
+                    healthChange: 10
+                });
+                return true;
             }
         }
-
-        // Legacy/Fallback Logic (or final step execution)
-        const isFailing = currentCase.failingTreatments.includes(treatment.type);
-        const isCorrect = treatment.type === currentCase.correctTreatment;
-
-        if (isFailing && !hasAcknowledgedFailure) {
-            // Wrong treatment - patient reacts badly
-            setPatientHealth(prev => Math.max(0, prev - 25));
-            addAction({
-                type: 'treatment_failed',
-                name: treatment.name,
-                result: `Treatment failed! ${currentCase.scanClue}`,
-                healthChange: -25
-            });
-            setFailureReason("Treatment ineffective and harmful to patient condition.");
-            discoverClue('treatment_failed');
-            showNotification('Treatment Failed!', -25, 'failure');
-            return false;
-        } else if (isCorrect && (!currentCase.requiredSequence || sequenceProgress === currentCase.requiredSequence.length - 1)) {
-            // Correct treatment (either no sequence required, or sequence complete)
-
-            setPatientHealth(prev => Math.min(100, prev + 40));
-            addAction({
-                type: 'treatment_success',
-                name: treatment.name,
-                result: 'Patient responds well! Symptoms improving.',
-                healthChange: 40
-            });
-            showNotification('Treatment Working!', 40, 'success');
-
-            // Check if patient is saved
-            if (patientHealth + 40 >= 95 || (currentCase.requiredSequence && sequenceProgress === currentCase.requiredSequence.length - 1)) {
-                setTimeout(() => setGameState('win'), 1000);
-            }
-            return true;
-        } else if (treatment.type === 'scan' && !currentCase.requiredSequence) {
-            // Scanning provides clues (only if not handled by sequence logic)
-            addAction({
-                type: 'diagnostic',
-                name: treatment.name,
-                result: `Scan complete. ${currentCase.scanClue}`
-            });
-            discoverClue('scan_complete');
-            showNotification('Scan Complete', null, 'neutral');
-            return true;
-        } else if (!currentCase.requiredSequence) {
-            // Partial success or neutral
-            const healthChange = Math.random() > 0.5 ? 5 : -5;
-            setPatientHealth(prev => Math.max(0, Math.min(100, prev + healthChange)));
-            addAction({
-                type: 'treatment_attempted',
-                name: treatment.name,
-                result: healthChange > 0 ? 'Slight improvement' : 'No significant change',
-                healthChange
-            });
-            showNotification(
-                healthChange > 0 ? 'Minor Improvement' : 'No Effect',
-                healthChange,
-                healthChange > 0 ? 'success' : 'neutral'
-            );
-            return healthChange > 0;
-        }
-
-        return false;
-    }, [currentCase, hasAcknowledgedFailure, discoveredClues, patientHealth, addAction, discoverClue, showNotification, setGameState, sequenceProgress]);
+    }, [currentCase, hasAcknowledgedFailure, sequenceProgress, addAction, discoverClue, showNotification]);
 
     const acknowledgeFailure = useCallback((reflection) => {
         setHasAcknowledgedFailure(true);

@@ -3,8 +3,6 @@ export const MEDICAL_CASES = [
     {
         id: 1,
         name: 'Metallergy Syndrome',
-        correctTreatment: 'oral',
-        failingTreatments: ['injection'],
         scanClue: 'Severe metal sensitivity. Protocol: Scan -> Oral -> Oral -> Injection A.',
         requiredSequence: ['scan', 'oral', 'oral', 'injection_a'],
         failureMessage: 'Protocol Violation: Desensitization incomplete. Two oral doses required before injection.',
@@ -18,8 +16,6 @@ export const MEDICAL_CASES = [
     {
         id: 2,
         name: 'Hemophagocytic Lymphohistiocytosis',
-        correctTreatment: 'oral',
-        failingTreatments: ['injection'],
         scanClue: 'Immune storm. Protocol: Scan -> Oral -> Oral -> IV.',
         requiredSequence: ['scan', 'oral', 'oral', 'iv'],
         failureMessage: 'Sequence Error: Double oral suppression required before IV stabilization.',
@@ -33,8 +29,6 @@ export const MEDICAL_CASES = [
     {
         id: 3,
         name: 'Acute Intermittent Porphyria',
-        correctTreatment: 'iv',
-        failingTreatments: ['oral'],
         scanClue: 'Porphyria attack. Protocol: Scan -> IV -> IV -> IV.',
         requiredSequence: ['scan', 'iv', 'iv', 'iv'],
         failureMessage: 'Treatment Incomplete: Triple IV Hemin flush required to clear porphyrins.',
@@ -48,8 +42,6 @@ export const MEDICAL_CASES = [
     {
         id: 4,
         name: 'Addisonian Crisis',
-        correctTreatment: 'injection_a',
-        failingTreatments: ['oral'],
         scanClue: 'Cortisol crisis. Protocol: Scan -> Injection A -> Injection A -> IV.',
         requiredSequence: ['scan', 'injection_a', 'injection_a', 'iv'],
         failureMessage: 'Dosage Error: Two steroid injections followed by IV fluids required.',
@@ -63,8 +55,6 @@ export const MEDICAL_CASES = [
     {
         id: 5,
         name: 'Myasthenia Gravis Crisis',
-        correctTreatment: 'iv',
-        failingTreatments: ['injection_a', 'injection_b'],
         scanClue: 'NMJ failure. Protocol: Scan -> IV -> IV -> Oral.',
         requiredSequence: ['scan', 'iv', 'iv', 'oral'],
         failureMessage: 'Protocol Violation: Full plasma exchange (2x IV) required before oral maintenance.',
@@ -78,8 +68,6 @@ export const MEDICAL_CASES = [
     {
         id: 6,
         name: 'Warfarin Toxicity',
-        correctTreatment: 'injection_a',
-        failingTreatments: ['oral', 'iv'],
         scanClue: 'High INR. Protocol: Scan -> Injection A -> Injection A -> Oral.',
         requiredSequence: ['scan', 'injection_a', 'injection_a', 'oral'],
         failureMessage: 'Sequence Error: Two Vitamin K injections required before oral stabilization.',
@@ -93,8 +81,6 @@ export const MEDICAL_CASES = [
     {
         id: 7,
         name: 'Thyroid Storm',
-        correctTreatment: 'oral',
-        failingTreatments: ['injection_a'],
         scanClue: 'Thyroid Storm. Protocol: Scan -> Oral -> Oral -> Oral.',
         requiredSequence: ['scan', 'oral', 'oral', 'oral'],
         failureMessage: 'Treatment Incomplete: Beta Blockers, PTU, and Steroids (3x Oral) required.',
@@ -108,8 +94,6 @@ export const MEDICAL_CASES = [
     {
         id: 8,
         name: 'Anaphylaxis (IV Contrast Allergy)',
-        correctTreatment: 'injection_b',
-        failingTreatments: ['oral', 'iv'],
         scanClue: 'Anaphylaxis. Protocol: Scan -> Injection B -> Injection B -> Oral.',
         requiredSequence: ['scan', 'injection_b', 'injection_b', 'oral'],
         failureMessage: 'Protocol Violation: Two Epinephrine doses required before Antihistamine.',
@@ -123,8 +107,6 @@ export const MEDICAL_CASES = [
     {
         id: 9,
         name: 'Severe Hypoglycemia',
-        correctTreatment: 'injection_b',
-        failingTreatments: ['oral'],
         scanClue: 'Hypoglycemia. Protocol: Scan -> Injection B -> IV -> Oral.',
         requiredSequence: ['scan', 'injection_b', 'iv', 'oral'],
         failureMessage: 'Sequence Error: Glucagon -> IV Dextrose -> Oral snack required.',
@@ -138,8 +120,6 @@ export const MEDICAL_CASES = [
     {
         id: 10,
         name: 'Malignant Hyperthermia',
-        correctTreatment: 'iv',
-        failingTreatments: ['injection_a', 'oral'],
         scanClue: 'Malignant Hyperthermia. Protocol: Scan -> IV -> IV -> IV.',
         requiredSequence: ['scan', 'iv', 'iv', 'iv'],
         failureMessage: 'Dosage Error: Malignant Hyperthermia requires aggressive high-dose IV Dantrolene (3x).',
