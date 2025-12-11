@@ -10,7 +10,7 @@ export const MEDICAL_CASES = [
             { disease: 'Kallmann Syndrome', symptoms: ['Fever', 'Fatigue', 'Neurological issues'], cure: 'Injection Therapy', probability: '35%', notes: 'Rare endocrine disorder' },
             { disease: 'Pompe Disease', symptoms: ['Muscle weakness', 'Respiratory issues', 'Fatigue'], cure: 'IV Enzyme Replacement', probability: '28%', notes: 'Genetic disorder affecting muscles' },
             { disease: 'Metallergy Syndrome', symptoms: ['Fever', 'Skin rash', 'Fatigue'], cure: 'Oral Antihistamines', probability: '65%', notes: 'Severe metal allergy - AVOID METAL NEEDLES', highlighted: true },
-            { disease: 'Fabry Disease', symptoms: ['Pain in extremities', 'Fever', 'Fatigue'], cure: 'Injection Therapy', probability: '22%', notes: 'Lysosomal storage disorder' }
+            { disease: 'Fabry Disease', symptoms: ['Pain in extremities', 'Fever', 'Fatigue'], cure: 'Injection Therapy (Injection A)', probability: '22%', notes: 'Lysosomal storage disorder' }
         ]
     },
     {
@@ -47,7 +47,7 @@ export const MEDICAL_CASES = [
         failureMessage: 'Dosage Error: Two steroid injections followed by IV fluids required.',
         databases: [
             { disease: 'Hypothyroidism', symptoms: ['Fatigue', 'Weight gain', 'Cold sensitivity'], cure: 'Oral Levothyroxine', probability: '25%', notes: 'Thyroid hormone deficiency' },
-            { disease: 'Addisonian Crisis', symptoms: ['Severe weakness', 'Low blood pressure', 'Confusion'], cure: 'Emergency Hydrocortisone Injection', probability: '72%', notes: 'URGENT: Oral route too slow - patient needs immediate IV/IM steroids', highlighted: true },
+            { disease: 'Addisonian Crisis', symptoms: ['Severe weakness', 'Low blood pressure', 'Confusion'], cure: 'Hydrocortisone (Injection A)', probability: '72%', notes: 'URGENT: Oral route too slow - patient needs immediate IV/IM steroids', highlighted: true },
             { disease: 'Cushings Syndrome', symptoms: ['Weight gain', 'High blood pressure'], cure: 'Surgery', probability: '30%', notes: 'Excess cortisol production' },
             { disease: 'Diabetes Insipidus', symptoms: ['Extreme thirst', 'Frequent urination'], cure: 'Oral Desmopressin', probability: '22%', notes: 'Vasopressin deficiency' }
         ]
@@ -73,7 +73,7 @@ export const MEDICAL_CASES = [
         failureMessage: 'Sequence Error: Two Vitamin K injections required before oral stabilization.',
         databases: [
             { disease: 'Hemophilia', symptoms: ['Easy bruising', 'Prolonged bleeding', 'Joint pain'], cure: 'IV Clotting Factor', probability: '32%', notes: 'Genetic clotting disorder' },
-            { disease: 'Warfarin Toxicity', symptoms: ['Bleeding', 'Bruising', 'Blood in urine'], cure: 'Vitamin K Injection', probability: '70%', notes: 'URGENT: Oral vitamin K too slow, IV route may cause anaphylaxis - IM injection required', highlighted: true },
+            { disease: 'Warfarin Toxicity', symptoms: ['Bleeding', 'Bruising', 'Blood in urine'], cure: 'Vitamin K (Injection A)', probability: '70%', notes: 'URGENT: Oral vitamin K too slow, IV route may cause anaphylaxis - IM injection required', highlighted: true },
             { disease: 'Von Willebrand Disease', symptoms: ['Nosebleeds', 'Heavy periods', 'Bruising'], cure: 'Desmopressin', probability: '26%', notes: 'Most common bleeding disorder' },
             { disease: 'Thrombocytopenia', symptoms: ['Easy bruising', 'Fatigue', 'Bleeding'], cure: 'Oral Steroids', probability: '18%', notes: 'Low platelet count' }
         ]
@@ -99,7 +99,7 @@ export const MEDICAL_CASES = [
         failureMessage: 'Protocol Violation: Two Epinephrine doses required before Antihistamine.',
         databases: [
             { disease: 'Food Allergy', symptoms: ['Hives', 'Swelling', 'Nausea'], cure: 'Oral Antihistamine', probability: '25%', notes: 'IgE-mediated reaction' },
-            { disease: 'Anaphylaxis', symptoms: ['Difficulty breathing', 'Swelling', 'Rapid pulse'], cure: 'Epinephrine Auto-Injector', probability: '75%', notes: 'CRITICAL: IV route delays treatment, oral ineffective - IM epinephrine only option', highlighted: true },
+            { disease: 'Anaphylaxis', symptoms: ['Difficulty breathing', 'Swelling', 'Rapid pulse'], cure: 'Epinephrine (Injection B)', probability: '75%', notes: 'CRITICAL: IV route delays treatment, oral ineffective - IM epinephrine only option', highlighted: true },
             { disease: 'Angioedema', symptoms: ['Facial swelling', 'Throat swelling'], cure: 'IV Steroids', probability: '30%', notes: 'Bradykinin-mediated swelling' },
             { disease: 'Urticaria', symptoms: ['Itchy hives', 'Redness'], cure: 'Oral Antihistamine', probability: '20%', notes: 'Chronic hives condition' }
         ]
@@ -112,7 +112,7 @@ export const MEDICAL_CASES = [
         failureMessage: 'Sequence Error: Glucagon -> IV Dextrose -> Oral snack required.',
         databases: [
             { disease: 'Type 1 Diabetes', symptoms: ['Thirst', 'Frequent urination', 'Fatigue'], cure: 'Insulin Injection', probability: '28%', notes: 'Autoimmune pancreatic failure' },
-            { disease: 'Severe Hypoglycemia', symptoms: ['Unconsciousness', 'Seizures', 'Confusion'], cure: 'Glucagon Injection', probability: '72%', notes: 'URGENT: Patient unconscious - oral glucose impossible, needs IM glucagon', highlighted: true },
+            { disease: 'Severe Hypoglycemia', symptoms: ['Unconsciousness', 'Seizures', 'Confusion'], cure: 'Glucagon (Injection B)', probability: '72%', notes: 'URGENT: Patient unconscious - oral glucose impossible, needs IM glucagon', highlighted: true },
             { disease: 'Insulinoma', symptoms: ['Low blood sugar', 'Sweating', 'Confusion'], cure: 'Surgery', probability: '24%', notes: 'Insulin-secreting tumor' },
             { disease: 'Reactive Hypoglycemia', symptoms: ['Shakiness', 'Anxiety', 'Hunger'], cure: 'Dietary Changes', probability: '18%', notes: 'Post-meal blood sugar drop' }
         ]

@@ -12,14 +12,14 @@ const TREATMENTS = [
     },
     {
         id: 'injection_a',
-        name: 'Administer Cure A (Injection)',
+        name: 'Injection A (Standard)',
         type: 'injection_a',
         icon: 'INJ',
         description: 'Standard metallic needle delivery'
     },
     {
         id: 'injection_b',
-        name: 'Administer Cure B (Injection)',
+        name: 'Injection B (Epinephrine)',
         type: 'injection_b',
         icon: 'INJ',
         description: 'Alternative metallic needle delivery'
