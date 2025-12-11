@@ -19,13 +19,7 @@ const PatientView = () => {
     return (
         <div className="patient-view">
             <div className="patient-container">
-                <div className="patient-image-wrapper">
-                    <img
-                        src="/assets/patient-in-bed.png"
-                        alt="Patient in hospital bed"
-                        className={`patient-image patient-${patientState}`}
-                    />
-                </div>
+                {/* Image removed for professional text-only interface */}
                 <div className="patient-vitals glass-panel">
                     <div className="vital-row">
                         <span className="vital-label">Health:</span>

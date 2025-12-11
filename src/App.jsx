@@ -7,11 +7,29 @@ import AccountabilityModal from './components/AccountabilityModal';
 import FloatingNotification from './components/FloatingNotification';
 import ProtocolTracker from './components/ProtocolTracker';
 import Leaderboard from './components/Leaderboard';
+import NameEntry from './components/NameEntry';
+import { generateGameFeedback } from './services/gemini';
 import './App.css';
 
 const GameScreen = () => {
-    const { gameState, startGame, timeLeft, errorCount, currentCase } = useGame();
+    const { gameState, startGame, timeLeft, errorCount, currentCase, playerName, playerResponses } = useGame();
     const [showScrollIndicator, setShowScrollIndicator] = useState(true);
+    const [aiFeedback, setAiFeedback] = useState('');
+    const [loadingFeedback, setLoadingFeedback] = useState(false);
+
+    useEffect(() => {
+        if (gameState === 'win' || gameState === 'lose') {
+            setLoadingFeedback(true);
+            const score = { time: 300 - timeLeft, errors: errorCount };
+            generateGameFeedback(playerName, currentCase, playerResponses, gameState, score)
+                .then(feedback => {
+                    setAiFeedback(feedback);
+                    setLoadingFeedback(false);
+                });
+        } else {
+            setAiFeedback('');
+        }
+    }, [gameState]);
 
     useEffect(() => {
         if (gameState !== 'playing') return;
@@ -37,65 +55,77 @@ const GameScreen = () => {
                 <div className="start-content glass-panel animate-slide-up">
                     <h1>Emergency Room</h1>
                     <h2>Critical Case</h2>
-                    <div className="start-description">
-                        <p>A patient has arrived with a rare disease. You have limited time to diagnose and treat them.</p>
-                        <p><strong>Your mission:</strong></p>
-                        <ul>
-                            <li>Analyze symptoms carefully (Critical Thinking)</li>
-                            <li>Make quick decisions (Action Oriented)</li>
-                            <li>Take responsibility for outcomes (Accountability)</li>
-                        </ul>
-                    </div>
-                    <button className="btn btn-primary btn-large" onClick={startGame}>
-                        Start Emergency
-                    </button>
+
+                    {!playerName ? (
+                        <NameEntry />
+                    ) : (
+                        <>
+                            <div className="start-description">
+                                <p>Welcome, Dr. {playerName}. A patient has arrived with a rare disease.</p>
+                                <p><strong>Your mission:</strong></p>
+                                <ul>
+                                    <li>Analyze symptoms carefully (Critical Thinking)</li>
+                                    <li>Make quick decisions (Action Oriented)</li>
+                                    <li>Take responsibility for outcomes (Accountability)</li>
+                                </ul>
+                            </div>
+                            <button className="btn btn-primary btn-large" onClick={startGame}>
+                                Start Emergency
+                            </button>
+                        </>
+                    )}
                 </div>
             </div>
         );
     }
 
-    if (gameState === 'win') {
+    if (gameState === 'win' || gameState === 'lose') {
         const score = {
-            time: 300 - timeLeft, // Calculate time elapsed (assuming 300s start)
+            time: 300 - timeLeft,
             errors: errorCount,
             caseName: currentCase?.name
         };
 
-        return (
-            <div className="end-screen win-screen">
-                <div className="end-content glass-panel animate-fade-in">
-                    <div className="end-icon">SUCCESS</div>
-                    <h1>Patient Saved!</h1>
-                    <p>You successfully diagnosed and treated the rare condition.</p>
+        const isWin = gameState === 'win';
 
-                    <Leaderboard newScore={score} />
+        return (
+            <div className={`end-screen ${isWin ? 'win-screen' : 'lose-screen'}`}>
+                <div className="end-content glass-panel animate-fade-in" style={{ maxWidth: '800px' }}>
+                    <div className="end-icon">{isWin ? 'SUCCESS' : 'CRITICAL FAILURE'}</div>
+                    <h1>{isWin ? 'Patient Stabilized' : 'Patient Lost'}</h1>
+
+                    <div className="feedback-section" style={{ textAlign: 'left', margin: '20px 0', padding: '15px', background: 'rgba(0,0,0,0.3)', borderRadius: '8px' }}>
+                        <h3 style={{ color: '#64ffda', borderBottom: '1px solid #333', paddingBottom: '5px' }}>Supervisor Feedback</h3>
+                        {loadingFeedback ? (
+                            <p className="animate-pulse">Generating performance review...</p>
+                        ) : (
+                            <p style={{ lineHeight: '1.6' }}>{aiFeedback}</p>
+                        )}
+                    </div>
+
+                    <div className="log-section" style={{ textAlign: 'left', maxHeight: '200px', overflowY: 'auto', background: 'rgba(0,0,0,0.3)', padding: '10px', borderRadius: '8px', marginBottom: '20px' }}>
+                        <h4 style={{ color: '#ccc', fontSize: '0.9rem' }}>Action Log:</h4>
+                        <ul style={{ listStyle: 'none', padding: 0, fontSize: '0.85rem', color: '#aaa' }}>
+                            {playerResponses.map((r, i) => (
+                                <li key={i} style={{ borderBottom: '1px solid rgba(255,255,255,0.05)', padding: '4px 0' }}>
+                                    <span style={{ color: '#fff' }}>[{r.timestamp}s]</span> {r.action} - {r.result}
+                                </li>
+                            ))}
+                        </ul>
+                    </div>
+
+                    {isWin && <Leaderboard newScore={score} />}
 
                     <div className="end-stats">
-                        <p>Demonstrated critical thinking by analyzing symptoms</p>
-                        <p>Took action when needed</p>
+                        <p>Time Elapsed: {score.time}s</p>
+                        <p>Protocol Errors: {score.errors}</p>
                     </div>
-                    <button className="btn btn-success btn-large" onClick={startGame}>
-                        New Case
-                    </button>
-                </div>
-            </div>
-        );
-    }
 
-    if (gameState === 'lose') {
-        return (
-            <div className="end-screen lose-screen">
-                <div className="end-content glass-panel animate-fade-in">
-                    <div className="end-icon">FAILED</div>
-                    <h1>Patient Lost</h1>
-                    <p>Time ran out or the patient's condition deteriorated.</p>
-                    <div className="end-stats">
-                        <p>Remember: Taking time to analyze is important, but so is acting quickly.</p>
-                        <p>Don't be afraid to acknowledge when something isn't working.</p>
-                    </div>
-                    <button className="btn btn-danger btn-large" onClick={startGame}>
-                        Try Again
-                    </button>
+                    {!loadingFeedback && (
+                        <button className={`btn ${isWin ? 'btn-success' : 'btn-danger'} btn-large`} onClick={startGame}>
+                            Next Case
+                        </button>
+                    )}
                 </div>
             </div>
         );

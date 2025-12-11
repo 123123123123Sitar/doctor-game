@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useGame } from '../context/GameContext';
 import './Leaderboard.css';
 
 const GOOGLE_SCRIPT_URL = import.meta.env.VITE_GOOGLE_SCRIPT_URL;
@@ -6,7 +7,8 @@ const GOOGLE_SCRIPT_URL = import.meta.env.VITE_GOOGLE_SCRIPT_URL;
 const Leaderboard = ({ newScore }) => {
     const [scores, setScores] = useState([]);
     const [loading, setLoading] = useState(true);
-    const [name, setName] = useState('');
+    const { playerName } = useGame();
+    const [name, setName] = useState(playerName || '');
     const [submitting, setSubmitting] = useState(false);
     const [submitted, setSubmitted] = useState(false);
 
@@ -18,6 +20,10 @@ const Leaderboard = ({ newScore }) => {
         { name: "Strange", time: 40, errors: 2, caseName: "Metallergy Syndrome" },
         { name: "Who", time: 30, errors: 5, caseName: "Unknown" },
     ];
+
+    useEffect(() => {
+        if (playerName) setName(playerName);
+    }, [playerName]);
 
     useEffect(() => {
         fetchScores();
@@ -98,7 +104,7 @@ const Leaderboard = ({ newScore }) => {
 
     return (
         <div className="leaderboard-container glass-panel animate-fade-in">
-            <h2>🏆 Global Leaderboard</h2>
+            <h2>Global Leaderboard</h2>
 
             {!submitted && newScore ? (
                 <div className="submit-score-section">
@@ -124,7 +130,7 @@ const Leaderboard = ({ newScore }) => {
                 </div>
             ) : submitted && (
                 <div className="submit-success">
-                    <p>✅ Score Submitted Successfully!</p>
+                    <p>Score Submitted Successfully.</p>
                 </div>
             )}
 
@@ -151,7 +157,7 @@ const Leaderboard = ({ newScore }) => {
                                         <td>#{index + 1}</td>
                                         <td>{score.name}</td>
                                         <td>
-                                            {score.errors === 0 ? <span className="perfect-star">⭐</span> : ''}
+                                            {score.errors === 0 ? <span className="perfect-star">★</span> : ''}
                                             {score.errors}
                                         </td>
                                         <td>{score.time}s</td>

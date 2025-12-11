@@ -14,21 +14,21 @@ const TREATMENTS = [
         id: 'injection_a',
         name: 'Injection A (Standard)',
         type: 'injection_a',
-        icon: 'INJ',
+        icon: 'INJ-A',
         description: 'Standard metallic needle delivery'
     },
     {
         id: 'injection_b',
         name: 'Injection B (Epinephrine)',
         type: 'injection_b',
-        icon: 'INJ',
+        icon: 'INJ-B',
         description: 'Alternative metallic needle delivery'
     },
     {
         id: 'oral',
         name: 'Administer Oral Treatment',
         type: 'oral',
-        icon: 'PILL',
+        icon: 'ORAL',
         description: 'Pill-based delivery method'
     },
     {
@@ -41,7 +41,7 @@ const TREATMENTS = [
 ];
 
 const ActionPanel = () => {
-    const { timeLeft, applyTreatment, discoveredClues } = useGame();
+    const { timeLeft, applyTreatment, discoveredClues, logResponse } = useGame();
     const [selectedTreatment, setSelectedTreatment] = useState(null);
 
     const formatTime = (seconds) => {
@@ -60,6 +60,7 @@ const ActionPanel = () => {
         setSelectedTreatment(treatment);
         setTimeout(() => {
             applyTreatment(treatment);
+            logResponse(treatment.name, 'Attempted');
             setSelectedTreatment(null);
         }, 500);
     };

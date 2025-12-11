@@ -25,6 +25,8 @@ export const GameProvider = ({ children }) => {
     const [sequenceProgress, setSequenceProgress] = useState(0);
     const [failureReason, setFailureReason] = useState(null);
     const [errorCount, setErrorCount] = useState(0);
+    const [playerName, setPlayerName] = useState('');
+    const [playerResponses, setPlayerResponses] = useState([]);
 
     const showNotification = useCallback((message, healthChange, type) => {
         const id = Date.now() + Math.random();
@@ -83,7 +85,19 @@ export const GameProvider = ({ children }) => {
         setSequenceProgress(0);
         setFailureReason(null);
         setErrorCount(0);
+        setPlayerResponses([]);
     }, []);
+
+    const logResponse = useCallback((action, result) => {
+        setPlayerResponses(prev => [
+            ...prev,
+            {
+                action,
+                result,
+                timestamp: Math.floor(300 - timeLeft) // Approximate timestamp
+            }
+        ]);
+    }, [timeLeft]);
 
     const addAction = useCallback((action) => {
         setActionHistory(prev => [...prev, {
@@ -222,7 +236,11 @@ export const GameProvider = ({ children }) => {
         applyTreatment,
         acknowledgeFailure,
         failureReason,
-        errorCount
+        errorCount,
+        playerName,
+        setPlayerName,
+        playerResponses,
+        logResponse
     };
 
     return (
