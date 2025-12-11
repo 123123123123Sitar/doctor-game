@@ -1,0 +1,95 @@
+.handbook-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.85);
+    z-index: 2000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    backdrop-filter: blur(5px);
+}
+
+.handbook-modal {
+    width: 90%;
+    max-width: 600px;
+    max-height: 85vh;
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+    border: 1px solid var(--color-accent-cyan);
+    box-shadow: 0 0 30px rgba(6, 182, 212, 0.2);
+}
+
+.handbook-header {
+    background: rgba(6, 182, 212, 0.1);
+    padding: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.handbook-header h2 {
+    margin: 0;
+    font-size: 1.2rem;
+    color: var(--color-accent-blue);
+}
+
+.close-btn {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 1.2rem;
+    cursor: pointer;
+}
+
+.handbook-search {
+    padding: 1rem;
+    background: rgba(0, 0, 0, 0.3);
+}
+
+.handbook-search input {
+    width: 100%;
+    padding: 0.8rem;
+    background: rgba(0, 0, 0, 0.5);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 4px;
+    color: white;
+    font-family: var(--font-mono);
+}
+
+.handbook-content {
+    padding: 1rem;
+    overflow-y: auto;
+    flex-grow: 1;
+}
+
+.handbook-entry {
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 6px;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    border-left: 3px solid var(--color-accent-cyan);
+}
+
+.handbook-entry h3 {
+    margin-top: 0;
+    color: var(--color-text-primary);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding-bottom: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.protocol-text {
+    color: var(--color-accent-green);
+    font-weight: bold;
+}
+
+.handbook-alert {
+    color: #f87171;
+    font-size: 0.9rem;
+    margin-top: 0.5rem;
+}

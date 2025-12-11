@@ -1,5 +1,5 @@
 import { createContext, useContext, useState, useEffect, useCallback } from 'react';
-import { getRandomCase } from '../data/medicalCases';
+import { getMedicalCases } from '../data/medicalCases';
 
 const GameContext = createContext();
 
@@ -25,6 +25,7 @@ export const GameProvider = ({ children }) => {
     const [sequenceProgress, setSequenceProgress] = useState(0);
     const [failureReason, setFailureReason] = useState(null);
     const [errorCount, setErrorCount] = useState(0);
+    const [difficulty, setDifficulty] = useState('medium');
     const [playerName, setPlayerName] = useState('');
     const [playerResponses, setPlayerResponses] = useState([]);
 
@@ -71,16 +72,18 @@ export const GameProvider = ({ children }) => {
     }, [patientHealth]);
 
     const startGame = useCallback(() => {
-        const newCase = getRandomCase();
-        setCurrentCase(newCase);
         setGameState('playing');
-        setPatientHealth(100);
         setTimeLeft(300);
-        setActionHistory([]);
+        setPatientHealth(100);
+        setPatientState('stable');
+
+        const cases = getMedicalCases(difficulty);
+        const randomCase = cases[Math.floor(Math.random() * cases.length)];
+        setCurrentCase(randomCase);
+
         setDiscoveredClues([]);
         setHasAcknowledgedFailure(false);
         setTreatmentAttempts(0);
-        setPatientState('stable');
         setNotifications([]);
         setSequenceProgress(0);
         setFailureReason(null);
@@ -240,7 +243,9 @@ export const GameProvider = ({ children }) => {
         playerName,
         setPlayerName,
         playerResponses,
-        logResponse
+        logResponse,
+        difficulty,
+        setDifficulty
     };
 
     return (

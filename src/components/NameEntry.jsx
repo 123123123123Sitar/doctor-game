@@ -3,7 +3,7 @@ import { useGame } from '../context/GameContext';
 import './NameEntry.css';
 
 const NameEntry = () => {
-    const { setPlayerName, startGame } = useGame();
+    const { setPlayerName, startGame, difficulty, setDifficulty } = useGame();
     const [name, setName] = useState('');
 
     const handleSubmit = (e) => {
@@ -28,6 +28,23 @@ const NameEntry = () => {
                     autoFocus
                     required
                 />
+
+                <div className="difficulty-selector">
+                    <label>Clearance Level:</label>
+                    <div className="difficulty-buttons">
+                        {['easy', 'medium', 'hard'].map(level => (
+                            <button
+                                key={level}
+                                type="button"
+                                className={`btn-difficulty ${difficulty === level ? 'active' : ''}`}
+                                onClick={() => setDifficulty(level)}
+                            >
+                                {level.toUpperCase()}
+                            </button>
+                        ))}
+                    </div>
+                </div>
+
                 <button type="submit" className="btn btn-primary btn-large">
                     Clock In
                 </button>

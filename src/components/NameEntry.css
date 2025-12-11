@@ -42,3 +42,44 @@
     border-color: var(--color-accent-cyan);
     box-shadow: 0 0 10px rgba(6, 182, 212, 0.3);
 }
+
+.difficulty-selector {
+    margin: 1rem 0;
+    text-align: left;
+}
+
+.difficulty-selector label {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: var(--color-text-secondary);
+    font-size: 0.9rem;
+}
+
+.difficulty-buttons {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: center;
+}
+
+.btn-difficulty {
+    flex: 1;
+    padding: 0.6rem;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: var(--color-text-secondary);
+    cursor: pointer;
+    border-radius: 4px;
+    font-family: var(--font-mono);
+    transition: all 0.2s;
+}
+
+.btn-difficulty.active {
+    background: var(--color-accent-blue);
+    color: white;
+    border-color: var(--color-accent-cyan);
+    font-weight: bold;
+}
+
+.btn-difficulty:hover:not(.active) {
+    background: rgba(255, 255, 255, 0.1);
+}

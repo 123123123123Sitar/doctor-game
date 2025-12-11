@@ -8,6 +8,7 @@ import FloatingNotification from './components/FloatingNotification';
 import ProtocolTracker from './components/ProtocolTracker';
 import Leaderboard from './components/Leaderboard';
 import NameEntry from './components/NameEntry';
+import Handbook from './components/Handbook';
 import { generateGameFeedback } from './services/gemini';
 import './App.css';
 
@@ -16,6 +17,7 @@ const GameScreen = () => {
     const [showScrollIndicator, setShowScrollIndicator] = useState(true);
     const [aiFeedback, setAiFeedback] = useState('');
     const [loadingFeedback, setLoadingFeedback] = useState(false);
+    const [isHandbookOpen, setIsHandbookOpen] = useState(false);
 
     useEffect(() => {
         if (gameState === 'win' || gameState === 'lose') {
@@ -37,8 +39,6 @@ const GameScreen = () => {
         const handleScroll = (e) => {
             const scrollPosition = e.target.scrollTop;
             const viewportHeight = window.innerHeight;
-
-            // Hide indicator if scrolled past halfway through first section
             setShowScrollIndicator(scrollPosition < viewportHeight / 2);
         };
 
@@ -48,6 +48,13 @@ const GameScreen = () => {
             return () => gameScreen.removeEventListener('scroll', handleScroll);
         }
     }, [gameState]);
+
+    const scrollToControls = () => {
+        const controlsSection = document.querySelector('.controls-section');
+        if (controlsSection) {
+            controlsSection.scrollIntoView({ behavior: 'smooth' });
+        }
+    };
 
     if (gameState === 'start') {
         return (
@@ -131,13 +138,6 @@ const GameScreen = () => {
         );
     }
 
-    const scrollToControls = () => {
-        const controlsSection = document.querySelector('.controls-section');
-        if (controlsSection) {
-            controlsSection.scrollIntoView({ behavior: 'smooth' });
-        }
-    };
-
     return (
         <div className="game-screen">
             <div className="game-layout">
@@ -154,6 +154,12 @@ const GameScreen = () => {
                 </section>
 
                 <section className="game-section controls-section">
+                    <div className="controls-header">
+                        <h2>Medical Database [LOCKED]</h2>
+                        <button className="btn btn-small" onClick={() => setIsHandbookOpen(true)}>
+                            📘 Handbook
+                        </button>
+                    </div>
                     <div className="controls-section-content">
                         <div className="controls-grid-left">
                             <Database />
@@ -165,6 +171,8 @@ const GameScreen = () => {
                     </div>
                 </section>
             </div>
+
+            <Handbook isOpen={isHandbookOpen} onClose={() => setIsHandbookOpen(false)} />
             <AccountabilityModal />
             <FloatingNotification />
         </div>

@@ -41,16 +41,18 @@ function doGet(e) {
         const sheet = getSheet();
         const data = sheet.getDataRange().getValues();
 
-        // Assume header is row 1, data starts row 2
         // If empty or just header
         if (data.length <= 1) {
             return ContentService.createTextOutput(JSON.stringify([])).setMimeType(ContentService.MimeType.JSON);
         }
 
-        // Indices: 0=Timestamp, 1=Name, 2=Time, 3=Errors, 4=Case
+        // Assume header is row 1, data starts row 2
+        // Indices based on doPost append order:
+        // 0=Timestamp, 1=Name, 2=Time, 3=Errors, 4=Case, 5=Difficulty, 6=Date String
         const rows = data.slice(1);
 
         const scores = rows.map(row => ({
+            timestamp: row[0], // Raw timestamp
             name: row[1],
             time: parseInt(row[2]),
             errors: parseInt(row[3]),
@@ -74,13 +76,14 @@ function doGet(e) {
     }
 }
 
-function getSheet() {
+function setupSheet() {
     const ss = SpreadsheetApp.getActiveSpreadsheet();
     let sheet = ss.getSheetByName(SHEET_NAME);
     if (!sheet) {
         sheet = ss.insertSheet(SHEET_NAME);
         // Add Headers
-        sheet.appendRow(['Timestamp', 'Name', 'Time (Seconds)', 'Errors', 'Case Name', 'Date']);
+        sheet.appendRow(['Name', 'Time (s)', 'Errors', 'Case', 'Difficulty', 'Timestamp']);
     }
     return sheet;
 }
+```
