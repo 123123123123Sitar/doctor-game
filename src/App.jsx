@@ -175,7 +175,6 @@ const GameScreen = () => {
                             <Database />
                         </div>
                         <div className="controls-grid-right">
-                            <ProtocolTracker />
                             <ActionPanel />
                         </div>
                     </div>
@@ -183,7 +182,7 @@ const GameScreen = () => {
             </div>
 
             <Handbook isOpen={isHandbookOpen} onClose={() => setIsHandbookOpen(false)} />
-            <AccountabilityModal />
+            <AccountabilityModal onOpenHandbook={handleOpenHandbook} />
             <FloatingNotification />
         </div>
     );

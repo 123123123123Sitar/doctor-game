@@ -2,7 +2,7 @@ import { useGame } from '../context/GameContext';
 import { useState } from 'react';
 import './AccountabilityModal.css';
 
-const AccountabilityModal = () => {
+const AccountabilityModal = ({ onOpenHandbook }) => {
     const { discoveredClues, hasAcknowledgedFailure, acknowledgeFailure, failureReason } = useGame();
     const [reflection, setReflection] = useState('');
 
@@ -59,6 +59,15 @@ const AccountabilityModal = () => {
                 </div>
 
                 <div className="modal-footer">
+                    {onOpenHandbook && (
+                        <button
+                            className="btn btn-secondary"
+                            onClick={onOpenHandbook}
+                            style={{ marginRight: '10px' }}
+                        >
+                            Open Handbook
+                        </button>
+                    )}
                     <button
                         className="btn btn-primary"
                         onClick={handleSubmit}
