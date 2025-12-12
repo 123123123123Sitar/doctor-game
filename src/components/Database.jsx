@@ -25,11 +25,6 @@ const Database = () => {
         <div className="database glass-panel">
             <div className="database-header">
                 <h2>Medical Database</h2>
-                {!scanComplete && (
-                    <div className="database-locked">
-                        <span>[LOCKED] Run diagnostic scan first</span>
-                    </div>
-                )}
             </div>
 
             {scanComplete ? (

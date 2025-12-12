@@ -170,14 +170,6 @@ const GameScreen = () => {
                 </section>
 
                 <section className="game-section controls-section">
-                    <div className="controls-header">
-                        <h2>Medical Database [LOCKED]</h2>
-                        {errorCount > 0 && (
-                            <button className="btn btn-small" onClick={handleOpenHandbook}>
-                                Handbook
-                            </button>
-                        )}
-                    </div>
                     <div className="controls-section-content">
                         <div className="controls-grid-left">
                             <Database />
