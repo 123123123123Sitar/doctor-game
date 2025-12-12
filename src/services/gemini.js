@@ -2,8 +2,8 @@ import { GoogleGenerativeAI } from "@google/generative-ai";
 
 const API_KEY = import.meta.env.VITE_GEMINI_API_KEY;
 
-// Using the 1.5 Flash model as it's fast and efficient for this use case
-const MODEL_NAME = "gemini-1.5-flash";
+// Using gemini-pro model
+const MODEL_NAME = "gemini-pro";
 
 export const generateGameFeedback = async (playerName, caseData, responses, outcome, score) => {
     if (!API_KEY) {
