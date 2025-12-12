@@ -2,35 +2,91 @@ import { useState } from 'react';
 import './Handbook.css';
 
 const TEXTBOOK_DATA = [
+    // Main Correct Diagnoses
     {
         name: 'Malignant Hyperthermia',
         symptoms: 'Rapid temp spike, Muscle rigidity, High CO2',
-        protocol: 'IV (Dantrolene) x2 -> Oral (Cooling)',
+        protocol: 'Scan -> IV (Dantrolene) x2 -> Oral (Cooling)',
         alert: 'Avoid Volatile Anesthetics'
     },
     {
         name: 'Anaphylaxis',
-        symptoms: 'Airway constriction, Hypotension, Hives',
-        protocol: 'Injection B (Epinephrine) x2 -> Oral (Antihistamine)',
+        symptoms: 'Airway constriction, Hypotension, Hives/Urticaria',
+        protocol: 'Scan -> Injection B (Epinephrine) x2 -> Oral (Antihistamine)',
         alert: 'Time Critical - Airway Risk'
     },
     {
         name: 'Thyroid Storm',
         symptoms: 'HR > 180, High Fever, Delirium/Agitation',
-        protocol: 'Oral (Beta-Blocker) -> IV (Fluids) -> Injection A (Steroids)',
+        protocol: 'Scan -> Oral (Beta-Blocker) -> IV (Fluids) -> Injection A (Steroids)',
         alert: 'Multi-organ Failure Risk'
     },
     {
         name: 'Warfarin Toxicity',
-        symptoms: 'Uncontrolled Bleeding, INR > 9.0',
-        protocol: 'Injection A (Vit K) x2 -> Oral (Plasma)',
+        symptoms: 'Uncontrolled Bleeding, INR > 9.0, Bruising',
+        protocol: 'Scan -> Injection A (Vitamin K) x2 -> Oral (Plasma)',
         alert: 'Hemorrhage Risk'
     },
     {
         name: 'Metallergy Syndrome',
-        symptoms: 'Autoimmune reaction to metal, Hives near implants',
-        protocol: 'Oral (Chelation) x2 -> IV (Flush)',
+        symptoms: 'Autoimmune reaction to metal, Hives near implants, Systemic reaction',
+        protocol: 'Scan -> Oral (Chelation) x2 -> IV (Flush)',
         alert: 'Do NOT use metallic needles (Injections)'
+    },
+    // Distractor Diagnoses (for reference)
+    {
+        name: 'Severe Sepsis',
+        symptoms: 'Fever, Low BP, Elevated lactate',
+        protocol: 'IV Antibiotics, Fluids',
+        alert: 'Source control critical'
+    },
+    {
+        name: 'Acute Asthma Attack',
+        symptoms: 'Wheezing, Shortness of breath, Chest tightness',
+        protocol: 'Bronchodilators, Steroids',
+        alert: 'No skin involvement typically'
+    },
+    {
+        name: 'Panic Disorder',
+        symptoms: 'Hyperventilation, Palpitations, Dizziness',
+        protocol: 'Reassurance, Anxiolytics',
+        alert: 'Diagnosis of exclusion'
+    },
+    {
+        name: 'Stimulant Overdose',
+        symptoms: 'Tachycardia, Agitation, Hyperthermia',
+        protocol: 'Benzodiazepines, Supportive care',
+        alert: 'Check for drug use history'
+    },
+    {
+        name: 'Heat Stroke',
+        symptoms: 'High temp, Altered consciousness, Dry skin',
+        protocol: 'Rapid cooling, IV Fluids',
+        alert: 'Environmental exposure history'
+    },
+    {
+        name: 'Liver Failure',
+        symptoms: 'Coagulopathy, Jaundice, Encephalopathy',
+        protocol: 'Supportive care, Transplant evaluation',
+        alert: 'Check liver function tests'
+    },
+    {
+        name: 'Disseminated Intravascular Coagulation',
+        symptoms: 'Bleeding, Clotting, Low platelets',
+        protocol: 'Treat underlying cause, Supportive',
+        alert: 'Complex coagulation disorder'
+    },
+    {
+        name: 'Contact Dermatitis',
+        symptoms: 'Localized rash, Itching, Redness',
+        protocol: 'Topical steroids, Avoidance',
+        alert: 'Usually localized, not systemic'
+    },
+    {
+        name: 'Implant Infection',
+        symptoms: 'Fever, Pain at site, Swelling',
+        protocol: 'Antibiotics, Possible removal',
+        alert: 'Look for signs of infection'
     }
 ];
 
@@ -48,7 +104,7 @@ const Handbook = ({ isOpen, onClose }) => {
         <div className="handbook-overlay animate-fade-in" onClick={onClose}>
             <div className="handbook-modal glass-panel" onClick={e => e.stopPropagation()}>
                 <div className="handbook-header">
-                    <h2>📚 Medical Handbook (Standard Issue)</h2>
+                    <h2>Medical Handbook</h2>
                     <button className="close-btn" onClick={onClose}>X</button>
                 </div>
 
@@ -69,7 +125,7 @@ const Handbook = ({ isOpen, onClose }) => {
                                 <h3>{item.name}</h3>
                                 <p><strong>Symptoms:</strong> {item.symptoms}</p>
                                 <p><strong>Protocol:</strong> <span className="protocol-text">{item.protocol}</span></p>
-                                <p className="handbook-alert">⚠️ {item.alert}</p>
+                                <p className="handbook-alert">ALERT: {item.alert}</p>
                             </div>
                         ))
                     ) : (
