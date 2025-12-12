@@ -164,7 +164,7 @@ const GameScreen = () => {
                     {showScrollIndicator && (
                         <div className="scroll-indicator" onClick={scrollToControls}>
                             <span>Scroll for Controls</span>
-                            <span className="scroll-indicator-icon">↓</span>
+                            <span className="scroll-indicator-icon">v</span>
                         </div>
                     )}
                 </section>
@@ -172,9 +172,11 @@ const GameScreen = () => {
                 <section className="game-section controls-section">
                     <div className="controls-header">
                         <h2>Medical Database [LOCKED]</h2>
-                        <button className="btn btn-small" onClick={handleOpenHandbook}>
-                            📘 Handbook
-                        </button>
+                        {errorCount > 0 && (
+                            <button className="btn btn-small" onClick={handleOpenHandbook}>
+                                Handbook
+                            </button>
+                        )}
                     </div>
                     <div className="controls-section-content">
                         <div className="controls-grid-left">

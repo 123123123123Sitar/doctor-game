@@ -13,7 +13,7 @@ export const generateGameFeedback = async (playerName, caseData, responses, outc
 
     try {
         const genAI = new GoogleGenerativeAI(API_KEY);
-        const model = genAI.getModel({ model: MODEL_NAME });
+        const model = genAI.getGenerativeModel({ model: MODEL_NAME });
 
         const prompt = `
         You are a Senior Medical Resident Supervisor giving feedback to a junior doctor named ${playerName}.

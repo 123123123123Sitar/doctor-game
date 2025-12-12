@@ -160,7 +160,7 @@ const Leaderboard = ({ newScore }) => {
                                         <td>#{index + 1}</td>
                                         <td>{score.name}</td>
                                         <td>
-                                            {score.errors === 0 ? <span className="perfect-star">★</span> : ''}
+                                            {score.errors === 0 ? <span className="perfect-star"></span> : ''}
                                             {score.errors}
                                         </td>
                                         <td>{score.time}s</td>
@@ -175,7 +175,7 @@ const Leaderboard = ({ newScore }) => {
             </div>
             {!GOOGLE_SCRIPT_URL && (
                 <div className="mock-mode-banner">
-                    <small>⚠️ Demo Mode (Local Mock Data)</small>
+                    <small>Demo Mode (Local Mock Data)</small>
                 </div>
             )}
         </div>

@@ -144,12 +144,7 @@ export const GameProvider = ({ children }) => {
                     reason = "Protocol Violation: You must run a diagnostic scan before administering any treatment.";
                 } else {
                     // Friendly hint about what was expected
-                    const expectedName = expectedAction === 'injection_a' ? 'Injection A' :
-                        expectedAction === 'injection_b' ? 'Injection B' :
-                            expectedAction === 'iv' ? 'IV Drip' :
-                                expectedAction === 'oral' ? 'Oral Meds' :
-                                    expectedAction === 'scan' ? 'Diagnostic Scan' : expectedAction;
-                    reason += ` (Expected step: ${expectedName})`;
+                    reason += ` CONSULT HANDBOOK.`;
                 }
 
                 setFailureReason(reason);
