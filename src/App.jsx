@@ -99,8 +99,10 @@ const GameScreen = () => {
     }
 
     if (gameState === 'win' || gameState === 'lose') {
+        // Calculate starting time based on difficulty
+        const startingTime = difficulty === 'easy' ? 360 : difficulty === 'hard' ? 180 : 300;
         const score = {
-            time: 300 - timeLeft,
+            time: startingTime - timeLeft,
             errors: errorCount,
             caseName: currentCase?.name,
             difficulty: difficulty,
