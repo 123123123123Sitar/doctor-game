@@ -54,23 +54,23 @@ export const generateGameFeedback = async (playerName, caseData, responses, outc
         return generateFallbackFeedback(playerName, outcome, score);
     }
 
-    const prompt = `You are a Senior Medical Resident Supervisor giving feedback to a junior doctor named ${playerName}.
+    const prompt = `You are a mentor giving simple, encouraging feedback to ${playerName} who just played a doctor simulation game.
 
-Context:
+Game Result:
 - Case: ${caseData.name}
-- Outcome: ${outcome} (Win/Loss)
-- Final Score: ${score.errors} Errors, ${score.time}s Time
+- ${outcome === 'win' ? 'SUCCESS - Patient saved!' : 'FAILURE - Patient lost'}
+- Time: ${score.time} seconds
+- Mistakes: ${score.errors}
 
-Correct Protocol: ${caseData.scanClue}
+Their actions:
+${responses.map(r => `- ${r.action}`).join('\n')}
 
-Player's Actions Log:
-${responses.map(r => `- ${r.timestamp}s: ${r.action} (${r.result})`).join('\n')}
+Give feedback in 2-3 short sentences focusing on these skills:
+1. ACCOUNTABILITY - Did they own their decisions and learn from mistakes?
+2. ACTION ORIENTED - Did they act quickly and decisively?
+3. CRITICAL THINKING - Did they analyze before acting?
 
-Task:
-Provide brief, constructive, and professional feedback (max 3 sentences). 
-If they won, congratulate them but point out any minor errors if present.
-If they lost, explain the critical mistake in a firm but educational tone.
-Focus on clinical reasoning. Do not use emojis.`;
+Keep it simple, friendly, and educational. No medical jargon. No emojis.`;
 
     // Try each endpoint until one works
     for (const endpoint of GEMINI_ENDPOINTS) {
