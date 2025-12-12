@@ -19,14 +19,15 @@ function doPost(e) {
 
         const timestamp = new Date();
 
-        // Append row: [Timestamp, Name, Time(s), Errors, Case, Date String]
+        // Append row to match headers: Name, Time, Errors, Case, Difficulty, Handbook, Timestamp
         sheet.appendRow([
-            timestamp,
             data.name,
             data.time,
             data.errors,
             data.caseName || 'Unknown',
-            timestamp.toLocaleDateString()
+            data.difficulty || 'medium',
+            data.handbookUsed ? 'Yes' : 'No',
+            timestamp
         ]);
 
         return ContentService.createTextOutput(JSON.stringify({ 'result': 'success' })).setMimeType(ContentService.MimeType.JSON);
@@ -46,18 +47,18 @@ function doGet(e) {
             return ContentService.createTextOutput(JSON.stringify([])).setMimeType(ContentService.MimeType.JSON);
         }
 
-        // Assume header is row 1, data starts row 2
-        // Indices based on doPost append order:
-        // 0=Timestamp, 1=Name, 2=Time, 3=Errors, 4=Case, 5=Difficulty, 6=Date String
+        // Header is row 0. Data starts row 1.
+        // Columns: 0=Name, 1=Time, 2=Errors, 3=Case, 4=Difficulty, 5=Handbook, 6=Timestamp
         const rows = data.slice(1);
 
         const scores = rows.map(row => ({
-            timestamp: row[0], // Raw timestamp
-            name: row[1],
-            time: parseInt(row[2]),
-            errors: parseInt(row[3]),
-            caseName: row[4],
-            date: row[5]
+            name: row[0],
+            time: parseInt(row[1]),
+            errors: parseInt(row[2]),
+            caseName: row[3],
+            difficulty: row[4],
+            handbookUsed: row[5] === 'Yes',
+            timestamp: row[6]
         }));
 
         // Sort: Primary = Errors (Low to High), Secondary = Time (Low to High)
@@ -72,6 +73,7 @@ function doGet(e) {
         return ContentService.createTextOutput(JSON.stringify(scores.slice(0, 10))).setMimeType(ContentService.MimeType.JSON);
 
     } catch (err) {
+        // Return detailed error for debugging
         return ContentService.createTextOutput(JSON.stringify({ 'error': err.toString() })).setMimeType(ContentService.MimeType.JSON);
     }
 }
@@ -82,8 +84,17 @@ function setupSheet() {
     if (!sheet) {
         sheet = ss.insertSheet(SHEET_NAME);
         // Add Headers
-        sheet.appendRow(['Name', 'Time (s)', 'Errors', 'Case', 'Difficulty', 'Timestamp']);
+        sheet.appendRow(['Name', 'Time (s)', 'Errors', 'Case', 'Difficulty', 'Handbook', 'Timestamp']);
+        sheet.setFrozenRows(1);
     }
     return sheet;
 }
-```
+
+function getSheet() {
+    const ss = SpreadsheetApp.getActiveSpreadsheet();
+    let sheet = ss.getSheetByName(SHEET_NAME);
+    if (!sheet) {
+        sheet = setupSheet();
+    }
+    return sheet;
+}

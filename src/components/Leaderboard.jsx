@@ -14,11 +14,11 @@ const Leaderboard = ({ newScore }) => {
 
     // MOCK DATA for when no URL is provided
     const MOCK_SCORES = [
-        { name: "Dr. House", time: 45, errors: 0, caseName: "Malignant Hyperthermia" },
-        { name: "Doc Brown", time: 52, errors: 0, caseName: "Anaphylaxis" },
-        { name: "Grey", time: 60, errors: 1, caseName: "Thyroid Storm" },
-        { name: "Strange", time: 40, errors: 2, caseName: "Metallergy Syndrome" },
-        { name: "Who", time: 30, errors: 5, caseName: "Unknown" },
+        { name: "Dr. House", time: 45, errors: 0, caseName: "Malignant Hyperthermia", difficulty: "hard" },
+        { name: "Doc Brown", time: 52, errors: 0, caseName: "Anaphylaxis", difficulty: "medium" },
+        { name: "Grey", time: 60, errors: 1, caseName: "Thyroid Storm", difficulty: "easy" },
+        { name: "Strange", time: 40, errors: 2, caseName: "Metallergy Syndrome", difficulty: "hard" },
+        { name: "Who", time: 30, errors: 5, caseName: "Unknown", difficulty: "medium" },
     ];
 
     useEffect(() => {
@@ -64,7 +64,9 @@ const Leaderboard = ({ newScore }) => {
             name: name,
             time: newScore.time,
             errors: newScore.errors,
-            caseName: newScore.caseName
+            caseName: newScore.caseName || 'Unknown',
+            difficulty: newScore.difficulty || 'medium',
+            handbookUsed: newScore.handbookUsed || false
         };
 
         if (!GOOGLE_SCRIPT_URL) {
@@ -145,12 +147,13 @@ const Leaderboard = ({ newScore }) => {
                                 <th>Name</th>
                                 <th>Errors</th>
                                 <th>Time</th>
+                                <th>Diff</th>
                                 <th>Case</th>
                             </tr>
                         </thead>
                         <tbody>
                             {scores.length === 0 ? (
-                                <tr><td colSpan="5">No records yet. Be the first!</td></tr>
+                                <tr><td colSpan="6">No records yet. Be the first!</td></tr>
                             ) : (
                                 scores.map((score, index) => (
                                     <tr key={index} className={score.name === name ? 'highlight-row' : ''}>
@@ -161,6 +164,7 @@ const Leaderboard = ({ newScore }) => {
                                             {score.errors}
                                         </td>
                                         <td>{score.time}s</td>
+                                        <td>{score.difficulty ? score.difficulty.charAt(0).toUpperCase() : 'M'}</td>
                                         <td className="case-col">{score.caseName}</td>
                                     </tr>
                                 ))

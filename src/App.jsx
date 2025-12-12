@@ -13,11 +13,12 @@ import { generateGameFeedback } from './services/gemini';
 import './App.css';
 
 const GameScreen = () => {
-    const { gameState, startGame, timeLeft, errorCount, currentCase, playerName, playerResponses } = useGame();
+    const { gameState, startGame, timeLeft, errorCount, currentCase, playerName, playerResponses, difficulty } = useGame();
     const [showScrollIndicator, setShowScrollIndicator] = useState(true);
     const [aiFeedback, setAiFeedback] = useState('');
     const [loadingFeedback, setLoadingFeedback] = useState(false);
     const [isHandbookOpen, setIsHandbookOpen] = useState(false);
+    const [handbookUsed, setHandbookUsed] = useState(false);
 
     useEffect(() => {
         if (gameState === 'win' || gameState === 'lose') {
@@ -30,6 +31,10 @@ const GameScreen = () => {
                 });
         } else {
             setAiFeedback('');
+            // Reset handbook usage on new game (though startGame usually handles resets, local state needs manual reset if component doesn't unmount)
+            if (gameState === 'start') {
+                setHandbookUsed(false);
+            }
         }
     }, [gameState]);
 
@@ -53,6 +58,13 @@ const GameScreen = () => {
         const controlsSection = document.querySelector('.controls-section');
         if (controlsSection) {
             controlsSection.scrollIntoView({ behavior: 'smooth' });
+        }
+    };
+
+    const handleOpenHandbook = () => {
+        setIsHandbookOpen(true);
+        if (gameState === 'playing') {
+            setHandbookUsed(true);
         }
     };
 
@@ -90,7 +102,9 @@ const GameScreen = () => {
         const score = {
             time: 300 - timeLeft,
             errors: errorCount,
-            caseName: currentCase?.name
+            caseName: currentCase?.name,
+            difficulty: difficulty,
+            handbookUsed: handbookUsed
         };
 
         const isWin = gameState === 'win';
@@ -126,6 +140,8 @@ const GameScreen = () => {
                     <div className="end-stats">
                         <p>Time Elapsed: {score.time}s</p>
                         <p>Protocol Errors: {score.errors}</p>
+                        <p>Difficulty: {score.difficulty ? score.difficulty.charAt(0).toUpperCase() + score.difficulty.slice(1) : 'Medium'}</p>
+                        {score.handbookUsed && <p style={{ color: '#ffd700', fontSize: '0.9em' }}>Handbook Consulted</p>}
                     </div>
 
                     {!loadingFeedback && (
@@ -156,7 +172,7 @@ const GameScreen = () => {
                 <section className="game-section controls-section">
                     <div className="controls-header">
                         <h2>Medical Database [LOCKED]</h2>
-                        <button className="btn btn-small" onClick={() => setIsHandbookOpen(true)}>
+                        <button className="btn btn-small" onClick={handleOpenHandbook}>
                             📘 Handbook
                         </button>
                     </div>
