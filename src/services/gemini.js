@@ -39,6 +39,12 @@ export const generateGameFeedback = async (playerName, caseData, responses, outc
         return result.response.text();
     } catch (error) {
         console.error("Gemini Generation Error:", error);
-        return "Supervisor Feedback: Ability to generate detailed report is currently unavailable. Please review standard protocols.";
+
+        // Check for rate limiting
+        if (error.message && error.message.includes('429')) {
+            return `Supervisor Feedback: The AI feedback system is temporarily busy. Based on your performance: ${outcome === 'win' ? 'Well done, Doctor! You successfully treated the patient.' : 'Unfortunately, the patient was lost. Review the handbook and try again.'} Time: ${score.time}s, Errors: ${score.errors}.`;
+        }
+
+        return "Supervisor Feedback: Detailed report unavailable. Please review standard protocols.";
     }
 };
