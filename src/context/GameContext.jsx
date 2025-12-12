@@ -73,7 +73,11 @@ export const GameProvider = ({ children }) => {
 
     const startGame = useCallback(() => {
         setGameState('playing');
-        setTimeLeft(300);
+
+        // Time limits based on difficulty
+        const timeLimits = { easy: 360, medium: 300, hard: 180 };
+        setTimeLeft(timeLimits[difficulty] || 300);
+
         setPatientHealth(100);
         setPatientState('stable');
 
@@ -89,7 +93,7 @@ export const GameProvider = ({ children }) => {
         setFailureReason(null);
         setErrorCount(0);
         setPlayerResponses([]);
-    }, []);
+    }, [difficulty]);
 
     const logResponse = useCallback((action, result) => {
         setPlayerResponses(prev => [

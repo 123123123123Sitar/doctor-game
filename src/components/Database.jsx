@@ -2,10 +2,11 @@ import { useGame } from '../context/GameContext';
 import './Database.css';
 
 const Database = () => {
-    const { discoveredClues, actionHistory, currentCase } = useGame();
+    const { discoveredClues, actionHistory, currentCase, difficulty } = useGame();
 
     const scanComplete = discoveredClues.includes('scan_complete');
     const hasFailed = discoveredClues.includes('treatment_failed');
+    const isHardMode = difficulty === 'hard';
 
     if (!currentCase) {
         return (
@@ -33,7 +34,7 @@ const Database = () => {
                         <p>Scan Results: Rare disease detected. Review possible diagnoses below.</p>
                         {hasFailed && (
                             <div className="alert-box">
-                                WARNING: Treatment failed! Review highlighted diagnosis carefully.
+                                WARNING: Treatment failed! Consult the handbook for guidance.
                             </div>
                         )}
                     </div>
@@ -42,7 +43,7 @@ const Database = () => {
                         {currentCase.databases.map((entry, idx) => (
                             <div
                                 key={idx}
-                                className={`disease-card ${entry.highlighted && hasFailed ? 'highlighted' : ''}`}
+                                className={`disease-card ${entry.highlighted && hasFailed && !isHardMode ? 'highlighted' : ''}`}
                             >
                                 <div className="disease-header">
                                     <h3>{entry.disease}</h3>
@@ -56,11 +57,13 @@ const Database = () => {
                                         ))}
                                     </div>
                                 </div>
-                                <div className="disease-cure">
-                                    <strong>Recommended:</strong> {entry.cure}
-                                </div>
+                                {!isHardMode && (
+                                    <div className="disease-cure">
+                                        <strong>Recommended:</strong> {entry.cure}
+                                    </div>
+                                )}
                                 <div className="disease-notes">
-                                    {entry.notes}
+                                    {isHardMode ? 'Consult handbook for treatment protocol.' : entry.notes}
                                 </div>
                             </div>
                         ))}
